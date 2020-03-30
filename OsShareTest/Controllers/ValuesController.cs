@@ -15,13 +15,18 @@ namespace OsShareTest.Controllers
         [HttpPut("CreateFile")]
         public IActionResult Get(string fileName)
         {
-
             var client = new SMB2Client();
             client.Connect(IPAddress.Parse("192.168.1.166"), SMBTransportType.DirectTCPTransport);
             client.Login("WORKGROUP", "Alon Amrani", "alon1023");
             var tree = client.TreeConnect("Users", out var e);
             var result = tree.CreateFile(out var h, out var status, $"Efrat\\Desktop\\Hackathon\\AlonShare\\{fileName}",
                 AccessMask.GENERIC_ALL, FileAttributes.Normal, ShareAccess.Read, CreateDisposition.FILE_CREATE, CreateOptions.FILE_NON_DIRECTORY_FILE, null);
+            return Ok();
+        }
+
+        [HttpGet("Ping")] 
+        public IActionResult Ping()
+        {
             return Ok();
         }
     }
